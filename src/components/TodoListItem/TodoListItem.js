@@ -53,7 +53,7 @@ export default class TodoListItem extends Component{
 				<button type="button"
 					className="btn btn-outline-success btn-sm float-right"
 					onClick={this.onMarkImportant}>
-				<i>+</i>
+				<i className="fa fa-thumb-tack"></i>
 				</button>
 
 				<button type="button"
