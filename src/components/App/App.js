@@ -15,12 +15,19 @@ class App extends React.Component{
   counter = 100;
    state = {
     todoData : [
-      { label: "Drink Coffee", important: false, id: 1 },
-      { label: "Build React App", important: false, id: 2 },
-      { label: "Have a lunch", important: true, id: 3 }
+        this.createTodoItem("Drink a coffee"),
+        this.createTodoItem("Build a React App"),
+        this.createTodoItem("Have a dinner"),
     ],
    }
-
+   createTodoItem(label){
+      return{
+        label,
+        important: false,
+        done: false,
+        id: this.counter++,
+      }
+   }
    deleteItem = (id) =>{
      this.setState(({todoData})=>{
 
@@ -43,11 +50,7 @@ class App extends React.Component{
    }
 
    addItem = (text) =>{
-      const newItem = {
-        label: text,
-        important: false,
-        id: this.counter++,
-      }
+      const newItem = this.createTodoItem(text);
       
       this.setState(({todoData})=>{
           const newTodoData = [
@@ -61,18 +64,45 @@ class App extends React.Component{
       });
    }
 
+   toggleProperty(arr, id, propName){
+      const idx = arr.findIndex(el=> el.id===id);
+            
+      const oldItem = arr[idx];
+      
+      // creating new item, with property with inverse ->t->f->t
+      const newItem = {...oldItem, [propName]: !oldItem[propName]};
+
+      // 2. Creating updated array of items
+      return [
+          ...arr.slice(0, idx),
+          newItem,
+          ...arr.slice(idx+1)
+      ];
+   }
    toggleDone = (id) =>{
-      console.log("Done", id);
+      this.setState(({todoData})=>{
+          return{
+              todoData: this.toggleProperty(todoData, id, 'done')
+          }
+      });
    }
 
    toggleImportant = (id) =>{
-    console.log("Important", id);
+      this.setState(({todoData})=>{
+        return{
+            todoData: this.toggleProperty(todoData, id, 'important')
+        }
+      });
    }
    render(){
+
+    const doneCount = this.state.todoData.filter(el => el.done).length;
+    const todoCount = this.state.todoData.length - doneCount;
+
     return (
       <div className="wrap" style={{background: `url(${img1})`, backgroundSize: 'cover'}}>
           <div className="todo-app">
-          <AppHeader todo={1} done={3}/>
+          <AppHeader todo={todoCount} done={doneCount}/>
     
           <div className="top-panel d-flex">
             <SearchPanel />
