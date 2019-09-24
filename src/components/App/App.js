@@ -100,7 +100,9 @@ class App extends React.Component{
     const todoCount = this.state.todoData.length - doneCount;
 
     return (
-      <div className="wrap" style={{background: `url(${img1})`, backgroundSize: 'cover'}}>
+      <div className="wrap" style={{
+                        background: `url(${img1})`, 
+                        backgroundSize: 'cover'}}>
           <div className="todo-app">
           <AppHeader todo={todoCount} done={doneCount}/>
     
